@@ -12,26 +12,33 @@ export class Viewport extends Component{
     constructor(props){
         super(props);
     
-        this.state = {
-            pan     : new Animated.ValueXY()   //Step 1
+        this.state = {  
+            pan             : new Animated.ValueXY()
         };
-    
-        this.panResponder = PanResponder.create({    //Step 2
-            onStartShouldSetPanResponder : () => true,
-            onPanResponderMove           : Animated.event([null,{ //Step 3
+    }
+    componentWillMount(){
+        this.panResponder = PanResponder.create({    
+            //  onStartShouldSetPanResponder : () => true,
+            onMoveShouldSetResponderCapture : () => true,
+            onMoveShouldSetPanResponderCapture : () => true,
+
+            onPanResponderGrant : (e, gestureState) => {
+                this.state.pan.setOffset({x: this.state.pan.x._value, y: this.state.pan.y._value});
+                this.state.pan.setValue({x: 0, y: 0});
+            },
+
+            onPanResponderMove : Animated.event([null,{ 
                 dx : this.state.pan.x,
-                dy : this.state.pan.y
             }]),
-            onPanResponderRelease        : (e, gesture) => {} //Step 4
+            onPanResponderRelease: (e, {vx, vy}) => {
+            }
         });
     }
+
+
     render(){
         return (
             <View style={styles.mainContainer}>
-                <View style={styles.dropZone}>
-                    <Text style={styles.text}>Drop me here!</Text>
-                </View>
-
                 {this.renderDraggable()}
             </View>
         );
@@ -40,14 +47,13 @@ export class Viewport extends Component{
     renderDraggable(){
         return (
             <View style={styles.draggableContainer}>
-                  <Animated.View 
-                {...this.panResponder.panHandlers}                       //Step 1
-                style={[this.state.pan.getLayout(), styles.circle]}>     
-                <Text style={styles.text}>Drag me!</Text>
+                  <Animated.View                   
+                style={[this.state.pan.getLayout(), styles.triangle]}
+                {...this.panResponder.panHandlers}   >     
             </Animated.View>
             </View>
         );
-    }
+}
 }
 
 let CIRCLE_RADIUS = 36;
@@ -56,26 +62,21 @@ let styles = StyleSheet.create({
     mainContainer: {
         flex    : 1
     },
-    dropZone    : {
-        height         : 100,
-        backgroundColor:'#2c3e50'
-    },
-    text        : {
-        marginTop   : 25,
-        marginLeft  : 5,
-        marginRight : 5,
-        textAlign   : 'center',
-        color       : '#fff'
-    },
     draggableContainer: {
         position    : 'absolute',
-        top         : Window.height/2 - CIRCLE_RADIUS,
+        bottom         : 15,
         left        : Window.width/2 - CIRCLE_RADIUS,
     },
-    circle      : {
-        backgroundColor     : '#1abc9c',
-        width               : CIRCLE_RADIUS*2,
-        height              : CIRCLE_RADIUS*2,
-        borderRadius        : CIRCLE_RADIUS
-    }
+    triangle: {
+        width: 0,
+        height: 0,
+        backgroundColor: 'transparent',
+        borderStyle: 'solid',
+        borderLeftWidth: 25,
+        borderRightWidth: 25,
+        borderBottomWidth: 50,
+        borderLeftColor: 'transparent',
+        borderRightColor: 'transparent',
+        borderBottomColor: 'blue'
+      }
 });
