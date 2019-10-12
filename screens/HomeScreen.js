@@ -7,12 +7,10 @@ import {
   Text,
   View,
 } from 'react-native';
-
+import { Viewport } from '../components/Viewport'
 export default function HomeScreen() {
   return (
-    <View>
-      
-    </View>
+   <Viewport></Viewport>
   );
 }
 
