@@ -11,6 +11,19 @@ import {
 export class Viewport extends Component{
     constructor(props){
         super(props);
+    
+        this.state = {
+            pan     : new Animated.ValueXY()   //Step 1
+        };
+    
+        this.panResponder = PanResponder.create({    //Step 2
+            onStartShouldSetPanResponder : () => true,
+            onPanResponderMove           : Animated.event([null,{ //Step 3
+                dx : this.state.pan.x,
+                dy : this.state.pan.y
+            }]),
+            onPanResponderRelease        : (e, gesture) => {} //Step 4
+        });
     }
     render(){
         return (
@@ -27,9 +40,11 @@ export class Viewport extends Component{
     renderDraggable(){
         return (
             <View style={styles.draggableContainer}>
-                <Animated.View style={styles.circle}>
-                    <Text style={styles.text}>Drag me!</Text>
-                </Animated.View>
+                  <Animated.View 
+                {...this.panResponder.panHandlers}                       //Step 1
+                style={[this.state.pan.getLayout(), styles.circle]}>     
+                <Text style={styles.text}>Drag me!</Text>
+            </Animated.View>
             </View>
         );
     }
