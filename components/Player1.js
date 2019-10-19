@@ -64,7 +64,7 @@ let styles = StyleSheet.create({
     },
     draggableContainer: {
         position    : 'absolute',
-        left        : Window.width/2 - CIRCLE_RADIUS,
+        left        : 50,
         top: 600
     
     },

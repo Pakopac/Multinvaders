@@ -11,11 +11,13 @@ import {
 import { Player1 } from '../components/Player1'
 import { Player2 } from '../components/Player2'
 import { Enemy } from '../components/Enemy'
+import { TirPlayer1 } from '../components/TirPlayer1'
 import { App } from '../components/MultiTap'
 export default function HomeScreen() {
   return (
     <View styles={styles.container}>
      <Player1></Player1>
+      <TirPlayer1></TirPlayer1>
       <Enemy styles={[styles.ennemies, styles.enemy1]}></Enemy>
      <Player2></Player2>
     </View>

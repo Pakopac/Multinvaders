@@ -27,7 +27,7 @@ let styles = StyleSheet.create({
     },
     diamond:{
         position: 'absolute',
-        top: Window.width/2,
+        top: Window.height/2 - 25,
         width: 50,
         height: 50,
         backgroundColor: 'red',
