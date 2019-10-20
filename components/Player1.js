@@ -21,7 +21,7 @@ export class Player1 extends Component{
             onMoveShouldSetResponderCapture : () => true,
             onMoveShouldSetPanResponderCapture : () => true,
 
-            onPanResponderGrant : (e, gestureState) => {
+            OnTouchStart : (e, gestureState) => {
                 this.state.pan.setOffset({x: this.state.pan.x._value, y: this.state.pan.y._value});
                 this.state.pan.setValue({x: 0, y: 0});
             },
@@ -40,6 +40,7 @@ export class Player1 extends Component{
                 <View style={styles.mainContainer}>
                     {this.renderDraggable()}
                 </View>
+                
         );
     }
 
@@ -49,6 +50,9 @@ export class Player1 extends Component{
                     <Animated.View                  
                     style={[this.state.pan.getLayout(), styles.triangle]}
                     {...this.panResponder.panHandlers}   > 
+                    </Animated.View>
+                    <Animated.View                  
+                    style={[this.state.pan.getLayout(), styles.triangle]}  > 
                     </Animated.View>
             </View>
           

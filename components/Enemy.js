@@ -30,7 +30,7 @@ let styles = StyleSheet.create({
         top: Window.height/2 - 25,
         width: 50,
         height: 50,
-        backgroundColor: 'red',
+        backgroundColor: 'black',
         transform: [
           {rotate: '45deg'}
         ]    
