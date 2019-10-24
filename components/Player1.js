@@ -37,7 +37,8 @@ export class Player1 extends Component{
 
     render(){
         return (
-                <View style={styles.mainContainer}>
+                <View
+                 style={styles.mainContainer}>
                     {this.renderDraggable()}
                 </View>
                 
@@ -47,7 +48,7 @@ export class Player1 extends Component{
     renderDraggable(){
         return (
                 <View style={styles.draggableContainer}>
-                    <Animated.View                  
+                    <Animated.View              
                     style={[this.state.pan.getLayout(), styles.triangle]}
                     {...this.panResponder.panHandlers}   > 
                     </Animated.View>

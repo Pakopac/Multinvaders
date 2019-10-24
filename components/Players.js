@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
-import { Animated, StyleSheet, View } from 'react-native';
+import { 
+  Animated, 
+  StyleSheet, 
+  View,
+  Dimensions } from 'react-native';
 
 import {
   PanGestureHandler,
@@ -8,6 +12,7 @@ import {
 } from 'react-native-gesture-handler';
 
 
+let Window = Dimensions.get('window');
 export class Players extends Component {
   constructor(props) {
     super(props);
@@ -25,9 +30,47 @@ export class Players extends Component {
       ],
 
     );
+    this.state = {
+      topPosition: new Animated.Value(Window.height - 125),
+      left: 73,
+      playerX: 20
+    }
   }
+
+  loop(){
+    this.state.topPosition.setValue(Window.height - 125)
+    Animated.sequence([
+    Animated.timing(this.state.topPosition, {
+        toValue: 0,
+        duration: 1500,
+      })
+    ])
+    .start((e) => {
+      if (e.finished) {
+        this.loop();
+        //console.log(this.myComponent.props.boxStyle.left)
+        /*this.myComponent.measure( (fx, fy, width, height, px, py) => {
+          console.log(fx)
+        })*/
+        //console.log(this.state.left)
+        //console.log(this.state.playerX)
+        this.setState({
+          left: this.state.playerX,
+          });
+      }
+    }) 
+  }
+
+  componentDidMount(){
+    this.loop()
+  }
+
   _onHandlerStateChange = event => {
     if (event.nativeEvent.oldState === State.ACTIVE) {
+       console.log(event)
+      this.setState({
+        playerX: event.nativeEvent.absoluteX,
+        });
       this._lastOffset.x += event.nativeEvent.translationX;
       this._translateX.setOffset(this._lastOffset.x);
       this._translateX.setValue(0);
@@ -37,7 +80,14 @@ export class Players extends Component {
   };
   render() {
     return (
+      <View>
+           <View>
+        <Animated.View
+          style={[styles.tir, { top: this.state.topPosition, left: this.state.left }]}>
+        </Animated.View>
+        </View>
       <PanGestureHandler
+        ref={view => { this.myComponent = view; }} 
         {...this.props}
         onGestureEvent={this._onGestureEvent}
         onHandlerStateChange={this._onHandlerStateChange}>
@@ -54,6 +104,7 @@ export class Players extends Component {
           ]}
         />
       </PanGestureHandler>
+      </View>
     );
   }
 }
@@ -61,8 +112,13 @@ export class Players extends Component {
 export default class Example extends Component {
   render() {
     return (
-      <View style={styles.scrollView}>
-        <DraggableBox />
+      <View>
+        <Animated.View
+          style={[styles.tir, { top: this.state.topPosition, left: this.state.left }]}>
+        </Animated.View>
+        <View style={styles.scrollView}>
+          <DraggableBox  />
+        </View>
       </View>
     );
   }
@@ -84,4 +140,17 @@ const styles = StyleSheet.create({
     borderLeftColor: 'transparent',
     borderRightColor: 'transparent',
   },
+  tir: {
+    position: 'absolute',
+
+    top: Window.height - 125,
+    height: 20,
+    width: 4,
+    backgroundColor: 'blue'
+},
+player1: {
+  top: 600,
+  borderBottomColor: 'blue',
+  left: 20,
+},
 });

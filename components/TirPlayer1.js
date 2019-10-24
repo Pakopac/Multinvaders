@@ -6,6 +6,7 @@ import {
     Dimensions,
     Animated,
 } from 'react-native';
+import { Players } from '../components/Players'
 
 
 
@@ -20,18 +21,23 @@ export class TirPlayer1 extends Component{
     }
   }
   loop(){
-    Animated.loop(
-      Animated.sequence([
+    this.state.topPosition.setValue(Window.height - 125)
+    Animated.sequence([
     Animated.timing(this.state.topPosition, {
         toValue: 0,
-        duration: 1500, // Le temps est en milliseconds ici (3000ms = 3sec)
+        duration: 1500,
       })
-    ]))
+    ])
     .start((e) => {
-      console.log(e)
-      this.loop()
-  })
-    
+      if (e.finished) {
+        this.loop();
+        //console.log(this.myComponent.props.boxStyle.left)
+        /*this.myComponent.measure( (fx, fy, width, height, px, py) => {
+          console.log(fx)
+        })*/
+        console.log('ok')
+      }
+    }) 
   }
   componentDidMount() {
     this.loop()
@@ -40,7 +46,9 @@ export class TirPlayer1 extends Component{
     render(){
         return (
             <View>
-                <Animated.View style={[styles.tir, { top: this.state.topPosition, left: this.state.left }]}>
+               
+                <Animated.View
+                 style={[styles.tir, { top: this.state.topPosition, left: this.state.left }]}>
                 </Animated.View>
             </View>
         )
@@ -55,6 +63,11 @@ let styles = StyleSheet.create({
         height: 20,
         width: 4,
         backgroundColor: 'blue'
+    },
+    player1: {
+      top: 600,
+      borderBottomColor: 'blue',
+      left: 20,
     },
 
 });
