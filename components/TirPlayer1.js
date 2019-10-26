@@ -21,10 +21,11 @@ export class TirPlayer1 extends Component{
     }
   }
   loop(){
-    this.state.topPosition.setValue(Window.height - 125)
+    
+    this.state.topPosition.setValue(startAnim)
     Animated.sequence([
     Animated.timing(this.state.topPosition, {
-        toValue: 0,
+        toValue: endAnim,
         duration: 1500,
       })
     ])
@@ -40,6 +41,7 @@ export class TirPlayer1 extends Component{
     }) 
   }
   componentDidMount() {
+    console.log(this.props.name)
     this.loop()
 }
 

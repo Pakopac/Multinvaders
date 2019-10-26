@@ -16,8 +16,8 @@ import { Players } from '../components/Players'
 export default function HomeScreen() {
   return (
     <View styles={styles.container}>
-           <Players boxStyle={styles.player1}></Players>
-      <Players boxStyle={styles.player2}></Players>
+      <Players isPlayer1={true} boxStyle={styles.player1}></Players>
+      <Players isPlayer1={false} boxStyle={styles.player2}></Players>
 
       <Enemy styles={[styles.ennemies, styles.enemy1]}></Enemy>
 

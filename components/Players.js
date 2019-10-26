@@ -3,7 +3,8 @@ import {
   Animated, 
   StyleSheet, 
   View,
-  Dimensions } from 'react-native';
+  Dimensions,
+ } from 'react-native';
 
 import {
   PanGestureHandler,
@@ -24,7 +25,6 @@ export class Players extends Component {
         {
           nativeEvent: {
             translationX: this._translateX,
-    
           },
         },
       ],
@@ -38,10 +38,18 @@ export class Players extends Component {
   }
 
   loop(){
-    this.state.topPosition.setValue(Window.height - 125)
+    if(this.props.isPlayer1){
+      var startAnim = Window.height - 125;
+      var endAnim = 0;
+    }
+    else{
+      var startAnim = 50;
+      var endAnim = Window.height;
+    }
+    this.state.topPosition.setValue(startAnim)
     Animated.sequence([
     Animated.timing(this.state.topPosition, {
-        toValue: 0,
+        toValue: endAnim,
         duration: 1500,
       })
     ])
@@ -66,11 +74,10 @@ export class Players extends Component {
   }
 
   _onHandlerStateChange = event => {
+    this.setState({
+      playerX: event.nativeEvent.absoluteX,
+      });
     if (event.nativeEvent.oldState === State.ACTIVE) {
-       console.log(event)
-      this.setState({
-        playerX: event.nativeEvent.absoluteX,
-        });
       this._lastOffset.x += event.nativeEvent.translationX;
       this._translateX.setOffset(this._lastOffset.x);
       this._translateX.setValue(0);
@@ -83,7 +90,7 @@ export class Players extends Component {
       <View>
            <View>
         <Animated.View
-          style={[styles.tir, { top: this.state.topPosition, left: this.state.left }]}>
+          style={[(this.props.isPlayer1) ? styles.tirPlayer1 : styles.tirPlayer2, { top: this.state.topPosition, left: this.state.left }]}>
         </Animated.View>
         </View>
       <PanGestureHandler
@@ -108,13 +115,14 @@ export class Players extends Component {
     );
   }
 }
-
 export default class Example extends Component {
+
   render() {
+  
     return (
       <View>
         <Animated.View
-          style={[styles.tir, { top: this.state.topPosition, left: this.state.left }]}>
+          style={[styles.player1, { top: this.state.topPosition, left: this.state.left }]}>
         </Animated.View>
         <View style={styles.scrollView}>
           <DraggableBox  />
@@ -142,11 +150,24 @@ const styles = StyleSheet.create({
   },
   tir: {
     position: 'absolute',
-
     top: Window.height - 125,
     height: 20,
     width: 4,
     backgroundColor: 'blue'
+},
+tirPlayer1: {
+  position: 'absolute',
+  top: Window.height - 125,
+  height: 20,
+  width: 4,
+  backgroundColor: 'blue'
+},
+tirPlayer2:{
+  position: 'absolute',
+  top: Window.height - 125,
+  height: 20,
+  width: 4,
+  backgroundColor: 'red'
 },
 player1: {
   top: 600,
