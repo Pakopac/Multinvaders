@@ -10,8 +10,8 @@ import {
   PanGestureHandler,
   ScrollView,
   State,
+  FlatList,
 } from 'react-native-gesture-handler';
-
 
 let Window = Dimensions.get('window');
 export class Players extends Component {
@@ -30,150 +30,92 @@ export class Players extends Component {
       ],
 
     )
-
-    if(this.props.isPlayer1){
       this.state = {
-        topPosition: Window.height - 125,
+        elements: [
+          {id:0, visible:true},
+          {id:1, visible:true}
+        ],
+        currentElements: [
+          {id:0, visible:true},
+          {id:1, visible:true}
+        ],
+        topPosition: new Animated.Value(Window.height - 125),
         left: 45, 
         playerX: 45,
         scoreJ1: 0,
       }
-    }
-    else{
-      this.state = {
-        topPosition: 50,
+    if(!this.props.isPlayer1){
+      this.setState({
         left: Window.width - 45, 
         playerX: Window.width - 45,
         scoreJ2: 0,
-      }
+      })
 
     }
 
   }
 
+  tir(){
+    this.state.topPosition.setValue(Window.height - 125)
+    this.setState({
+      elements: this.state.currentElements
+    })
+
+      
+      Animated.sequence([
+        Animated.timing(this.state.topPosition, {
+            toValue: 0,
+            duration: 1500,
+          })
+        ])
+        .start((e) => {
+          this.setState({
+            left: this.state.playerX
+          })
+          if(this.state.playerX > 100 
+            && this.state.playerX < 150
+            && this.state.elements[0].visible){
+            this.tirEnnemy()
+            this.state.currentElements[0].visible = false
+     
+          }
+          else if(this.state.playerX > 200 
+            && this.state.playerX < 250
+            && this.state.elements[1].visible){
+            this.tirEnnemy()
+            this.state.currentElements[1].visible = false
+     
+          }
+          else{
+            this.tir()
+          }
+        }) 
+      }
+
+      tirEnnemy(){
+
+        this.state.topPosition.setValue(Window.height - 125)
+          
+          Animated.sequence([
+            Animated.timing(this.state.topPosition, {
+                toValue: Window.height/2,
+                duration: 750,
+              })
+            ])
+            .start((e) => {
+              this.setState({
+                left: this.state.playerX,
+              })
+              this.tir()
+            }) 
+          }
+
   componentDidMount(){
-    var ArrEnnemies = ["ennemy1","ennemy2"]
-    if(this.props.isPlayer1){
-      const interval = setInterval(() => {
-        this.setState({topPosition : this.state.topPosition-10});
-        if(350 < this.state.topPosition
-          && this.state.topPosition < 351
-          && this.state.playerX > 100
-          && this.state.playerX < 150
-          && ArrEnnemies.includes("ennemy1")){ //position d'un ennemi
-          this.setState({
-            scoreJ1: this.state.scoreJ1 + 1,
-            });
-          console.log('j1',this.state.scoreJ1)
-          this.setState({topPosition : Window.height - 125});
-          
-           this.setState({
-            left: this.state.playerX,
-            });
-            
-            for( var i = 0; i < ArrEnnemies.length; i++){ 
-              if ( ArrEnnemies[i] === "ennemy1") {
-                ArrEnnemies.splice(i, 1); 
-                i--;
-              }
-            }
-            setTimeout(function(){ ArrEnnemies.push("ennemy1"); }, 3000);
-          }
-          if(350 < this.state.topPosition
-            && this.state.topPosition < 351
-            && this.state.playerX > 200
-            && this.state.playerX < 250
-            && ArrEnnemies.includes("ennemy2")){ //position d'un ennemi
-            this.setState({
-              scoreJ1: this.state.scoreJ1 + 1,
-              });
-            console.log('j1',this.state.scoreJ1)
-            this.setState({topPosition : Window.height - 125});
-            
-             this.setState({
-              left: this.state.playerX,
-              });
-              for( var i = 0; i < ArrEnnemies.length; i++){ 
-                if ( ArrEnnemies[i] === "ennemy2") {
-                  ArrEnnemies.splice(i, 1); 
-                  i--;
-                }
-              }
-              setTimeout(function(){ ArrEnnemies.push("ennemy2"); }, 3000);
-            }
-        if(0 > this.state.topPosition){ //haut de l'écran
-          this.setState({topPosition : Window.height - 125});
-          this.setState({
-            left: this.state.playerX,
-            });
-        }
-
-      }, 0.1);
-    }
-    else{
-      const interval = setInterval(() => {
-        this.setState({topPosition : this.state.topPosition+10});
-        if(302 < this.state.topPosition
-          && this.state.topPosition < 351
-          && this.state.playerX > 100
-          && this.state.playerX < 150
-          && ArrEnnemies.includes("ennemy1")){ //position d'un ennemi
-          console.log(this.state.scoreJ2)
-          this.setState({
-            scoreJ2: this.state.scoreJ2 + 1,
-            });
-          console.log(' j2', this.state.scoreJ2)
-          this.setState({topPosition : 50});
-          
-           this.setState({
-            left: this.state.playerX,
-            });
-            
-            for( var i = 0; i < ArrEnnemies.length; i++){ 
-              if ( ArrEnnemies[i] === "ennemy1") {
-                ArrEnnemies.splice(i, 1); 
-                i--;
-              }
-            }
-            setTimeout(function(){ ArrEnnemies.push("ennemy1"); }, 3000);
-          }
-          if(302 < this.state.topPosition
-            && this.state.topPosition < 351
-            && this.state.playerX > 200
-            && this.state.playerX < 250
-            && ArrEnnemies.includes("ennemy2")){ //position d'un ennemi
-            this.setState({
-              scoreJ2: this.state.scoreJ2 + 1,
-              });
-            console.log('j2', this.state.scoreJ2)
-            this.setState({topPosition : 50});
-            
-             this.setState({
-              left: this.state.playerX,
-              });
-              for( var i = 0; i < ArrEnnemies.length; i++){ 
-                if ( ArrEnnemies[i] === "ennemy2") {
-                  ArrEnnemies.splice(i, 1); 
-                  i--;
-                }
-              }
-              setTimeout(function(){ ArrEnnemies.push("ennemy2"); }, 3000);
-            }
-        if(Window.height < this.state.topPosition){ //bas de l'écran
-          this.setState({topPosition : 50});
-          this.setState({
-            left: this.state.playerX,
-            });
-        }
-
-      }, 0.1);
-    }
-    //setInterval(function(){ console.log('yes') }, 3000);
-    //this.loop()
+    this.tir()
   }
 
   _onGestureEvent = event => {
-    console.log('move')
+  
     this.setState({
       playerX: event.nativeEvent.absoluteX,
       });
@@ -182,6 +124,7 @@ export class Players extends Component {
   _onHandlerStateChange = event => {
     this.setState({
       playerX: event.nativeEvent.absoluteX,
+      
       });
     if (event.nativeEvent.oldState === State.ACTIVE) {
       this._lastOffset.x += event.nativeEvent.translationX;
@@ -191,8 +134,21 @@ export class Players extends Component {
       this._translateY.setValue(0);
     }
   };
+  renderItem({ item, index }) { 
+    if(item.visible){
+      return (
+        <View style={[styles.diamond, {backgroundColor: "black"}]} />
+      )
+    }
+    else{
+      return (
+      <View style={[styles.diamond, {backgroundColor: "white"}]} />
+      )
+    }
+  }
   render() {
     return (
+      
       <View>
            <View>
         <Animated.View
@@ -225,6 +181,13 @@ export class Players extends Component {
           ]}
         />
       </PanGestureHandler>
+      <View>
+        <FlatList
+            horizontal={true}
+            renderItem={this.renderItem}
+            data={this.state.elements}
+            style={styles.listEnnemies} />
+        </View>
       </View>
     );
   }
@@ -241,6 +204,9 @@ export default class Example extends Component {
         <View style={styles.scrollView}>
           <DraggableBox  />
         </View>
+        <View>
+      </View>
+            
       </View>
     );
   }
@@ -294,4 +260,23 @@ player1: {
   borderBottomColor: 'blue',
   left: 20,
 },
+listEnnemies:{
+  position: 'absolute',
+  top: Window.height/2 - 25,
+  left: 50,
+},
+diamond:{
+  marginLeft:50,
+  width: 50,
+  height: 50,
+  transform: [
+    {rotate: '45deg'}
+  ]    
+},
+enemy1:{
+  left: 100
+},
+enemy2:{
+  left: 200
+}
 });
