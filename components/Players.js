@@ -77,6 +77,9 @@ export class Players extends Component {
             && this.state.elements[0].visible){
             this.tirEnnemy()
             this.state.currentElements[0].visible = false
+            setTimeout(() => {
+              this.state.currentElements[0].visible = true
+            }, 4000)
      
           }
           else if(this.state.playerX > 200 
@@ -84,6 +87,9 @@ export class Players extends Component {
             && this.state.elements[1].visible){
             this.tirEnnemy()
             this.state.currentElements[1].visible = false
+            setTimeout(() => {
+              this.state.currentElements[1].visible = true
+            }, 4000)
      
           }
           else{
