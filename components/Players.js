@@ -56,12 +56,7 @@ export class Players extends Component {
   }
 
   tir(){
-    this.state.topPosition.setValue(Window.height - 125)
-    this.setState({
-      elements: this.state.currentElements
-    })
-
-      
+    this.state.topPosition.setValue(Window.height - 125) 
       Animated.sequence([
         Animated.timing(this.state.topPosition, {
             toValue: 0,
@@ -80,6 +75,9 @@ export class Players extends Component {
             setTimeout(() => {
               this.state.currentElements[0].visible = true
             }, 4000)
+            this.setState({
+              scoreJ1: this.state.scoreJ1 +=1
+            })
      
           }
           else if(this.state.playerX > 200 
@@ -90,6 +88,9 @@ export class Players extends Component {
             setTimeout(() => {
               this.state.currentElements[1].visible = true
             }, 4000)
+            this.setState({
+              scoreJ1: this.state.scoreJ1 +=1
+            })
      
           }
           else{
@@ -112,7 +113,12 @@ export class Players extends Component {
               this.setState({
                 left: this.state.playerX,
               })
-              this.tir()
+              if(e.finished){
+                this.setState({
+                  elements: this.state.currentElements
+                })
+                this.tir()
+              }
             }) 
           }
 
@@ -153,6 +159,12 @@ export class Players extends Component {
     }
   }
   render() {
+    setTimeout(() => {
+      this.props.navigation.navigate('Result', {
+        scoreJ1: this.state.scoreJ1,
+        scoreJ2: this.state.scoreJ2,
+    })
+    }, 3000)
     return (
       
       <View>
@@ -194,25 +206,6 @@ export class Players extends Component {
             data={this.state.elements}
             style={styles.listEnnemies} />
         </View>
-      </View>
-    );
-  }
-}
-export default class Example extends Component {
-
-  render() {
-  
-    return (
-      <View>
-        <Animated.View
-          style={[styles.player1, { top: this.state.topPosition, left: this.state.left }]}>
-        </Animated.View>
-        <View style={styles.scrollView}>
-          <DraggableBox  />
-        </View>
-        <View>
-      </View>
-            
       </View>
     );
   }
