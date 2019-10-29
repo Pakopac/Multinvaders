@@ -35,14 +35,16 @@ export class Players extends Component {
       this.state = {
         topPosition: Window.height - 125,
         left: 45, 
-        playerX: 45
+        playerX: 45,
+        scoreJ1: 0,
       }
     }
     else{
       this.state = {
         topPosition: 50,
         left: Window.width - 45, 
-        playerX: Window.width - 45
+        playerX: Window.width - 45,
+        scoreJ2: 0,
       }
 
     }
@@ -59,7 +61,10 @@ export class Players extends Component {
           && this.state.playerX > 100
           && this.state.playerX < 150
           && ArrEnnemies.includes("ennemy1")){ //position d'un ennemi
-          console.log(ArrEnnemies)
+          this.setState({
+            scoreJ1: this.state.scoreJ1 + 1,
+            });
+          console.log('j1',this.state.scoreJ1)
           this.setState({topPosition : Window.height - 125});
           
            this.setState({
@@ -79,6 +84,10 @@ export class Players extends Component {
             && this.state.playerX > 200
             && this.state.playerX < 250
             && ArrEnnemies.includes("ennemy2")){ //position d'un ennemi
+            this.setState({
+              scoreJ1: this.state.scoreJ1 + 1,
+              });
+            console.log('j1',this.state.scoreJ1)
             this.setState({topPosition : Window.height - 125});
             
              this.setState({
@@ -109,7 +118,11 @@ export class Players extends Component {
           && this.state.playerX > 100
           && this.state.playerX < 150
           && ArrEnnemies.includes("ennemy1")){ //position d'un ennemi
-          console.log(ArrEnnemies)
+          console.log(this.state.scoreJ2)
+          this.setState({
+            scoreJ2: this.state.scoreJ2 + 1,
+            });
+          console.log(' j2', this.state.scoreJ2)
           this.setState({topPosition : 50});
           
            this.setState({
@@ -129,6 +142,10 @@ export class Players extends Component {
             && this.state.playerX > 200
             && this.state.playerX < 250
             && ArrEnnemies.includes("ennemy2")){ //position d'un ennemi
+            this.setState({
+              scoreJ2: this.state.scoreJ2 + 1,
+              });
+            console.log('j2', this.state.scoreJ2)
             this.setState({topPosition : 50});
             
              this.setState({
