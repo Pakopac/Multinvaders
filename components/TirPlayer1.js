@@ -20,6 +20,7 @@ export class TirPlayer1 extends Component{
       left: 73
     }
   }
+
   loop(){
     
     this.state.topPosition.setValue(startAnim)

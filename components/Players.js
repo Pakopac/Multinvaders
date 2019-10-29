@@ -29,48 +29,137 @@ export class Players extends Component {
         },
       ],
 
-    );
-    this.state = {
-      topPosition: new Animated.Value(Window.height - 125),
-      left: 73,
-      playerX: 20
-    }
-  }
+    )
 
-  loop(){
     if(this.props.isPlayer1){
-      var startAnim = Window.height - 125;
-      var endAnim = 0;
+      this.state = {
+        topPosition: Window.height - 125,
+        left: 45, 
+        playerX: 45
+      }
     }
     else{
-      var startAnim = 50;
-      var endAnim = Window.height;
-    }
-    this.state.topPosition.setValue(startAnim)
-    Animated.sequence([
-    Animated.timing(this.state.topPosition, {
-        toValue: endAnim,
-        duration: 1500,
-      })
-    ])
-    .start((e) => {
-      if (e.finished) {
-        this.loop();
-        //console.log(this.myComponent.props.boxStyle.left)
-        /*this.myComponent.measure( (fx, fy, width, height, px, py) => {
-          console.log(fx)
-        })*/
-        //console.log(this.state.left)
-        //console.log(this.state.playerX)
-        this.setState({
-          left: this.state.playerX,
-          });
+      this.state = {
+        topPosition: 50,
+        left: Window.width - 45, 
+        playerX: Window.width - 45
       }
-    }) 
+
+    }
+
   }
 
   componentDidMount(){
-    this.loop()
+    var ArrEnnemies = ["ennemy1","ennemy2"]
+    if(this.props.isPlayer1){
+      const interval = setInterval(() => {
+        this.setState({topPosition : this.state.topPosition-10});
+        if(350 < this.state.topPosition
+          && this.state.topPosition < 351
+          && this.state.playerX > 100
+          && this.state.playerX < 150
+          && ArrEnnemies.includes("ennemy1")){ //position d'un ennemi
+          console.log(ArrEnnemies)
+          this.setState({topPosition : Window.height - 125});
+          
+           this.setState({
+            left: this.state.playerX,
+            });
+            
+            for( var i = 0; i < ArrEnnemies.length; i++){ 
+              if ( ArrEnnemies[i] === "ennemy1") {
+                ArrEnnemies.splice(i, 1); 
+                i--;
+              }
+            }
+            setTimeout(function(){ ArrEnnemies.push("ennemy1"); }, 3000);
+          }
+          if(350 < this.state.topPosition
+            && this.state.topPosition < 351
+            && this.state.playerX > 200
+            && this.state.playerX < 250
+            && ArrEnnemies.includes("ennemy2")){ //position d'un ennemi
+            this.setState({topPosition : Window.height - 125});
+            
+             this.setState({
+              left: this.state.playerX,
+              });
+              for( var i = 0; i < ArrEnnemies.length; i++){ 
+                if ( ArrEnnemies[i] === "ennemy2") {
+                  ArrEnnemies.splice(i, 1); 
+                  i--;
+                }
+              }
+              setTimeout(function(){ ArrEnnemies.push("ennemy2"); }, 3000);
+            }
+        if(0 > this.state.topPosition){ //haut de l'écran
+          this.setState({topPosition : Window.height - 125});
+          this.setState({
+            left: this.state.playerX,
+            });
+        }
+
+      }, 0.1);
+    }
+    else{
+      const interval = setInterval(() => {
+        this.setState({topPosition : this.state.topPosition+10});
+        if(302 < this.state.topPosition
+          && this.state.topPosition < 351
+          && this.state.playerX > 100
+          && this.state.playerX < 150
+          && ArrEnnemies.includes("ennemy1")){ //position d'un ennemi
+          console.log(ArrEnnemies)
+          this.setState({topPosition : 50});
+          
+           this.setState({
+            left: this.state.playerX,
+            });
+            
+            for( var i = 0; i < ArrEnnemies.length; i++){ 
+              if ( ArrEnnemies[i] === "ennemy1") {
+                ArrEnnemies.splice(i, 1); 
+                i--;
+              }
+            }
+            setTimeout(function(){ ArrEnnemies.push("ennemy1"); }, 3000);
+          }
+          if(302 < this.state.topPosition
+            && this.state.topPosition < 351
+            && this.state.playerX > 200
+            && this.state.playerX < 250
+            && ArrEnnemies.includes("ennemy2")){ //position d'un ennemi
+            this.setState({topPosition : 50});
+            
+             this.setState({
+              left: this.state.playerX,
+              });
+              for( var i = 0; i < ArrEnnemies.length; i++){ 
+                if ( ArrEnnemies[i] === "ennemy2") {
+                  ArrEnnemies.splice(i, 1); 
+                  i--;
+                }
+              }
+              setTimeout(function(){ ArrEnnemies.push("ennemy2"); }, 3000);
+            }
+        if(Window.height < this.state.topPosition){ //bas de l'écran
+          this.setState({topPosition : 50});
+          this.setState({
+            left: this.state.playerX,
+            });
+        }
+
+      }, 0.1);
+    }
+    //setInterval(function(){ console.log('yes') }, 3000);
+    //this.loop()
+  }
+
+  _onGestureEvent = event => {
+    console.log('move')
+    this.setState({
+      playerX: event.nativeEvent.absoluteX,
+      });
   }
 
   _onHandlerStateChange = event => {
@@ -90,23 +179,31 @@ export class Players extends Component {
       <View>
            <View>
         <Animated.View
-          style={[(this.props.isPlayer1) ? styles.tirPlayer1 : styles.tirPlayer2, { top: this.state.topPosition, left: this.state.left }]}>
+          style={[(this.props.isPlayer1) ? styles.tirPlayer1 : styles.tirPlayer2,
+          { top: this.state.topPosition, left: this.state.left }]}>
         </Animated.View>
         </View>
       <PanGestureHandler
-        ref={view => { this.myComponent = view; }} 
         {...this.props}
         onGestureEvent={this._onGestureEvent}
         onHandlerStateChange={this._onHandlerStateChange}>
         <Animated.View
           style={[
             styles.box,
+            (this.props.isPlayer1) ?
             {
               transform: [
                 { translateX: this._translateX },
                 { translateY: this._translateY },
               ],
-            },
+            } :
+            {
+              transform: [
+                
+                { translateX: this._translateX },
+                { translateY: this._translateY },
+              ],
+            } ,
             this.props.boxStyle,
           ]}
         />
@@ -147,6 +244,12 @@ const styles = StyleSheet.create({
     borderBottomWidth: 50,
     borderLeftColor: 'transparent',
     borderRightColor: 'transparent',
+   
+  },
+  triangleRotate: {
+    transform: [
+      {rotate: '180deg'}
+    ]
   },
   tir: {
     position: 'absolute',
