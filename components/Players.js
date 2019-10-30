@@ -31,10 +31,7 @@ export class Players extends Component {
 
     )
       this.state = {
-        elements: [
-          {id:0, visible:true},
-          {id:1, visible:true}
-        ],
+        elements: global.enemies.elements,
         currentElements: [
           {id:0, visible:true},
           {id:1, visible:true}
@@ -42,8 +39,6 @@ export class Players extends Component {
         topPosition: new Animated.Value(Window.height - 125),
         left: 45, 
         playerX: 45,
-        scoreJ1: 0,
-        scoreJ2: 0,
       }
   
 
@@ -51,6 +46,7 @@ export class Players extends Component {
   }
 
   tir(){
+    console.log(global.enemies)
     if(this.props.isPlayer1){
       this.state.topPosition.setValue(Window.height - 125) 
       var endAnim = 0
@@ -77,16 +73,9 @@ export class Players extends Component {
             setTimeout(() => {
               this.state.currentElements[0].visible = true
             }, 4000)
-            if(this.props.isPlayer1){
               this.setState({
-                scoreJ1: this.state.scoreJ1 +=1
+                scoreJ1: global.scoreJ1 +=1
               })
-            }
-            else{
-              this.setState({
-                scoreJ2: this.state.scoreJ2 +=1
-              })
-            }
      
           }
           else if(this.state.playerX > 200 
@@ -97,16 +86,12 @@ export class Players extends Component {
             setTimeout(() => {
               this.state.currentElements[1].visible = true
             }, 4000)
-            if(this.props.isPlayer1){
+        
               this.setState({
-                scoreJ1: this.state.scoreJ1 +=1
+                scoreJ1: global.scoreJ1 +=1
               })
-            }
-            else{
-              this.setState({
-                scoreJ2: this.state.scoreJ2 +=1
-              })
-            }
+         
+         
      
           }
           else{
@@ -116,13 +101,7 @@ export class Players extends Component {
       }
 
       tirEnnemy(){
-        if(this.props.player1){
           this.state.topPosition.setValue(Window.height - 125)
-        }
-        else{
-          this.state.topPosition.setValue(50)
-        }
-          
           Animated.sequence([
             Animated.timing(this.state.topPosition, {
                 toValue: Window.height/2,
@@ -137,20 +116,20 @@ export class Players extends Component {
                 this.setState({
                   elements: this.state.currentElements
                 })
+                global.enemies = this.state.currentElements
                 this.tir()
               }
             }) 
           }
 
   componentDidMount(){
-      console.log(this.state)
       this.tir()
   }
 
   _onGestureEvent = event => {
   
     this.setState({
-      playerX: event.nativeEvent.absoluteX,
+      playerX: event.nativeEvent.pageX,
       });
   }
 
@@ -182,10 +161,7 @@ export class Players extends Component {
   render() {
     if(this.props.isPlayer1){
     setTimeout(() => {
-      this.props.navigation.navigate('Result', {
-        scoreJ1: this.state.scoreJ1,
-        scoreJ2: this.state.scoreJ2,
-    })
+      this.props.navigation.navigate('Result')
     }, 10000)
   }
     return (

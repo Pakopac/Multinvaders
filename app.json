@@ -4,6 +4,9 @@
     "slug": "ProjectMaster",
     "privacy": "public",
     "sdkVersion": "35.0.0",
+    "android": {
+      "package": "com.lilian.ProjectMaster"
+    },
     "platforms": [
       "ios",
       "android",

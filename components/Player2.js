@@ -31,19 +31,23 @@ export class Player2 extends Component {
 
     )
       this.state = {
-        topPosition: new Animated.Value(Window.height - 125),
+        elements: global.enemies.elements,
+        currentElements: [
+          {id:0, visible:true},
+          {id:1, visible:true}
+        ],
+        topPosition: new Animated.Value(50),
         left: Window.width - 45, 
         playerX: Window.width - 45,
-        scoreJ2: 0,
       }
 
   }
 
-  /*tir(){
-    this.state.topPosition.setValue(Window.height - 125) 
+  tir(){
+    this.state.topPosition.setValue(50) 
       Animated.sequence([
         Animated.timing(this.state.topPosition, {
-            toValue: 0,
+            toValue: Window.height,
             duration: 1500,
           })
         ])
@@ -55,12 +59,12 @@ export class Player2 extends Component {
             && this.state.playerX < 150
             && this.state.elements[0].visible){
             this.tirEnnemy()
-            this.state.currentElements[0].visible = false
+               this.state.currentElements[0].visible = false
             setTimeout(() => {
-              this.state.currentElements[0].visible = true
+               this.state.currentElements[0].visible = true
             }, 4000)
             this.setState({
-              scoreJ1: this.state.scoreJ1 +=1
+              scoreJ2: global.scoreJ2 +=1
             })
      
           }
@@ -68,12 +72,12 @@ export class Player2 extends Component {
             && this.state.playerX < 250
             && this.state.elements[1].visible){
             this.tirEnnemy()
-            this.state.currentElements[1].visible = false
+              this.state.currentElements[1].visible = false
             setTimeout(() => {
               this.state.currentElements[1].visible = true
             }, 4000)
             this.setState({
-              scoreJ1: this.state.scoreJ1 +=1
+              scoreJ2: global.scoreJ2 +=1
             })
      
           }
@@ -85,7 +89,7 @@ export class Player2 extends Component {
 
       tirEnnemy(){
 
-        this.state.topPosition.setValue(Window.height - 125)
+        this.state.topPosition.setValue(0)
           
           Animated.sequence([
             Animated.timing(this.state.topPosition, {
@@ -101,13 +105,14 @@ export class Player2 extends Component {
                 this.setState({
                   elements: this.state.currentElements
                 })
+                global.enemies = this.state.currentElements
                 this.tir()
               }
             }) 
-          }*/
+          }
 
   componentDidMount(){
-      //this.tir()
+      this.tir()
   }
 
   _onGestureEvent = event => {
@@ -153,7 +158,7 @@ export class Player2 extends Component {
       <View>
            <View>
         <Animated.View
-          style={[(this.props.isPlayer1) ? styles.tirPlayer1 : styles.tirPlayer2,
+          style={[styles.tirPlayer2,
           { top: this.state.topPosition, left: this.state.left }]}>
         </Animated.View>
         </View>
@@ -164,13 +169,6 @@ export class Player2 extends Component {
         <Animated.View
           style={[
             styles.box,
-            (this.props.isPlayer1) ?
-            {
-              transform: [
-                { translateX: this._translateX },
-                { translateY: this._translateY },
-              ],
-            } :
             {
               transform: [
                 
@@ -200,7 +198,7 @@ const styles = StyleSheet.create({
     borderStyle: 'solid',
     borderLeftWidth: 25,
     borderRightWidth: 25,
-    borderBottomWidth: 50,
+    borderTopWidth: 50,
     borderLeftColor: 'transparent',
     borderRightColor: 'transparent',
    
@@ -230,11 +228,6 @@ tirPlayer2:{
   height: 20,
   width: 4,
   backgroundColor: 'red'
-},
-player1: {
-  top: 600,
-  borderBottomColor: 'blue',
-  left: 20,
 },
 listEnnemies:{
   position: 'absolute',

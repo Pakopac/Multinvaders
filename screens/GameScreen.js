@@ -17,18 +17,20 @@ import { Players } from '../components/Players'
 export default class GameScreen extends Component {
     constructor(props) {
       super(props);
-      this.state = {
-      elements: [
-        {id:0, visible:true},
-        {id:1, visible:true}
-      ],
-    }
     }
   render(){
+  global.scoreJ1 = 0
+  global.scoreJ2 = 0
+  global.enemies = {
+    elements: [
+      {id:0, visible:true},
+      {id:1, visible:true}
+    ],
+  }
   return (
     <View styles={styles.container}>
-      <Players navigation={this.props.navigation} elements={this.state.elements} isPlayer1={true} boxStyle={styles.player1}></Players>
-      <Players boxStyle={styles.player2}></Players>
+      <Players navigation={this.props.navigation} isPlayer1={true} boxStyle={styles.player1}></Players>
+      <Player2 boxStyle={styles.player2}></Player2>
     </View>
   );
   }

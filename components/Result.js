@@ -10,10 +10,10 @@ import {
 let Window = Dimensions.get('window');
 export class Result extends Component {
     winner(){
-        if(this.props.score.scoreJ1 > this.props.score.scoreJ2){
+        if(scoreJ1 > scoreJ2){
             return("Le joueur 1 gagne !!")
         }
-        else if(this.props.score.scoreJ1 < this.props.score.scoreJ2){
+        else if(scoreJ1 <scoreJ2){
             return("Le joueur 2 gagne !!")
         }
         else{
@@ -23,8 +23,8 @@ export class Result extends Component {
     render(){
         return(
             <View>
-                <Text style={styles.scoreJ1}>Score du joueur 1: {this.props.score.scoreJ1}</Text>
-                <Text style={styles.scoreJ2}>Score du joueur 2: {this.props.score.scoreJ2}</Text>
+                <Text style={styles.scoreJ1}>Score du joueur 1: {scoreJ1}</Text>
+                <Text style={styles.scoreJ2}>Score du joueur 2: {scoreJ2}</Text>
                 <Text style={styles.winner}>{this.winner}</Text>
             </View>
         )

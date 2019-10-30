@@ -12,79 +12,28 @@ const config = Platform.select({
   default: {},
 });
 
-const HomeStack = createStackNavigator(
-  {
-    Home: HomeScreen,
-  },
-  config
-);
-
-HomeStack.navigationOptions = {
-  tabBarLabel: 'Home',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={
-        Platform.OS === 'ios'
-          ? `ios-home${focused ? '' : '-outline'}`
-          : 'md-home'
-      }
-    />
-  ),
-};
-
-HomeStack.path = '';
-
 const GameStack = createStackNavigator(
   {
-    Game: GameScreen,
+      Home: HomeScreen,
+      Game: GameScreen,
+      Result: ResultScreen,
   },
   config
 );
+GameStack.navigationOptions = ({navigation}) => {
+  let tabBarVisible = false;
+  if (navigation.state.index > 0) {
+      return {
+          tabBarVisible: false
+      };
+  }
 
-GameStack.navigationOptions = {
-  tabBarLabel: 'Game',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={
-        Platform.OS === 'ios'
-          ? `ios-home${focused ? '' : '-outline'}`
-          : 'md-game'
-      }
-    />
-  ),
+  return {
+      tabBarVisible,
+  };
 };
-
-GameStack.path = '';
-
-const ResultStack = createStackNavigator(
-  {
-    Result: ResultScreen,
-  },
-  config
-);
-
-ResultStack.navigationOptions = {
-  tabBarLabel: 'Result',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={
-        Platform.OS === 'ios'
-          ? `ios-home${focused ? '' : '-outline'}`
-          : 'md-result'
-      }
-    />
-  ),
-};
-
-ResultStack.path = '';
-
 const tabNavigator = createBottomTabNavigator({
-  HomeStack,
   GameStack,
-  ResultStack
 });
 
 tabNavigator.path = '';
