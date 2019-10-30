@@ -21,7 +21,6 @@ export class Result extends Component {
         }
     }
     render(){
-        console.log(this.winner)
         return(
             <View>
                 <Text style={styles.scoreJ1}>Score du joueur 1: {this.props.score.scoreJ1}</Text>
