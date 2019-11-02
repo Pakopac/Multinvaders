@@ -5,6 +5,7 @@ import {
   View,
   Dimensions,
  } from 'react-native';
+ import ReactDOM from 'react-dom'
 
 import {
   PanGestureHandler,
@@ -20,6 +21,7 @@ export class Players extends Component {
     this._translateX = new Animated.Value(0);
     this._translateY = new Animated.Value(0);
     this._lastOffset = { x: 0, y: 0 };
+    this._pos = { x: 0, y: 0}
     this._onGestureEvent = Animated.event(
       [
         {
@@ -28,10 +30,15 @@ export class Players extends Component {
           },
         },
       ],
-
+      {
+        listener: event => {
+          this.state.playerX = event.nativeEvent.absoluteX
+        },
+      },
+      
+      //this.state.playerX = event.nativeEvent.absoluteX
     )
       this.state = {
-        elements: global.enemies.elements,
         currentElements: [
           {id:0, visible:true},
           {id:1, visible:true}
@@ -46,7 +53,6 @@ export class Players extends Component {
   }
 
   tir(){
-    console.log(global.enemies)
     if(this.props.isPlayer1){
       this.state.topPosition.setValue(Window.height - 125) 
       var endAnim = 0
@@ -66,8 +72,8 @@ export class Players extends Component {
             left: this.state.playerX
           })
           if(this.state.playerX > 100 
-            && this.state.playerX < 150
-            && this.state.elements[0].visible){
+            && this.state.playerX < 150){
+           // && this.state.elements[0].visible){
             this.tirEnnemy()
             this.state.currentElements[0].visible = false
             setTimeout(() => {
@@ -79,8 +85,8 @@ export class Players extends Component {
      
           }
           else if(this.state.playerX > 200 
-            && this.state.playerX < 250
-            && this.state.elements[1].visible){
+            && this.state.playerX < 250){
+            //&& this.state.elements[1].visible){
             this.tirEnnemy()
             this.state.currentElements[1].visible = false
             setTimeout(() => {
@@ -116,7 +122,6 @@ export class Players extends Component {
                 this.setState({
                   elements: this.state.currentElements
                 })
-                global.enemies = this.state.currentElements
                 this.tir()
               }
             }) 
@@ -126,18 +131,8 @@ export class Players extends Component {
       this.tir()
   }
 
-  _onGestureEvent = event => {
-  
-    this.setState({
-      playerX: event.nativeEvent.pageX,
-      });
-  }
-
   _onHandlerStateChange = event => {
-    this.setState({
-      playerX: event.nativeEvent.absoluteX,
-      
-      });
+    //console.log(event)
     if (event.nativeEvent.oldState === State.ACTIVE) {
       this._lastOffset.x += event.nativeEvent.translationX;
       this._translateX.setOffset(this._lastOffset.x);
@@ -146,6 +141,8 @@ export class Players extends Component {
       this._translateY.setValue(0);
     }
   };
+
+
   renderItem({ item, index }) { 
     if(item.visible){
       return (
@@ -159,11 +156,15 @@ export class Players extends Component {
     }
   }
   render() {
-    if(this.props.isPlayer1){
+    //console.log(this.props.elements)
+    this.props.elements =  [
+      {id:0, visible:true},
+    ]
+    /*if(this.props.isPlayer1){
     setTimeout(() => {
       this.props.navigation.navigate('Result')
     }, 10000)
-  }
+  }*/
     return (
       
       <View>
@@ -173,7 +174,7 @@ export class Players extends Component {
           { top: this.state.topPosition, left: this.state.left }]}>
         </Animated.View>
         </View>
-      <PanGestureHandler
+      <PanGestureHandler  
         {...this.props}
         onGestureEvent={this._onGestureEvent}
         onHandlerStateChange={this._onHandlerStateChange}>
@@ -198,13 +199,6 @@ export class Players extends Component {
           ]}
         />
       </PanGestureHandler>
-      <View>
-        <FlatList
-            horizontal={true}
-            renderItem={this.renderItem}
-            data={this.state.elements}
-            style={styles.listEnnemies} />
-        </View>
       </View>
     );
   }

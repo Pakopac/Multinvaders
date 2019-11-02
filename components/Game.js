@@ -6,40 +6,24 @@ import {
   FlatList,
  } from 'react-native';
 
+import Players from '../components/Players'
+import { Player2 } from './Player2';
+import { Enemy } from '../components/Enemy'
+
 let Window = Dimensions.get('window');
-export class Enemy extends Component {
+export class Game extends Component {
     constructor(props){
         super(props)
-        this.state= {
-            elements: [
-                {id:0, visible:true},
-                {id:1, visible:true}
-              ]
-        }
     }
-    renderItem({ item, index }) { 
-        if(item.visible){
-          return (
-            <View style={[styles.diamond, {backgroundColor: "black"}]} />
-          )
-        }
-        else{
-          return (
-          <View style={[styles.diamond, {backgroundColor: "white"}]} />
-          )
-        }
-      }
 
     render(){
         console.log(this.state.elements)
         return(
-
-            <FlatList
-                horizontal={true}
-                renderItem={this.renderItem}
-                data={this.state.elements}
-                style={styles.listEnnemies} />
-     
+        <View>
+            <Enemy></Enemy>
+            <Players boxStyle={styles.player1}></Players>
+            <Player2 boxStyle={styles.player2}></Player2>
+        </View>
         )
     }
 }
@@ -61,5 +45,10 @@ const styles = StyleSheet.create({
         top: 600,
         borderBottomColor: 'blue',
         left: 20,
+      },
+      player2: {
+        top: 30,
+        right: 20,
+        borderTopColor: 'red',
       },
 })

@@ -28,10 +28,14 @@ export class Player2 extends Component {
           },
         },
       ],
+      {
+        listener: event => {
+          this.state.playerX = event.nativeEvent.absoluteX
+        },
+      },
 
     )
       this.state = {
-        elements: global.enemies.elements,
         currentElements: [
           {id:0, visible:true},
           {id:1, visible:true}
@@ -56,8 +60,8 @@ export class Player2 extends Component {
             left: this.state.playerX
           })
           if(this.state.playerX > 100 
-            && this.state.playerX < 150
-            && this.state.elements[0].visible){
+            && this.state.playerX < 150){
+            //&& this.state.elements[0].visible){
             this.tirEnnemy()
                this.state.currentElements[0].visible = false
             setTimeout(() => {
@@ -69,8 +73,8 @@ export class Player2 extends Component {
      
           }
           else if(this.state.playerX > 200 
-            && this.state.playerX < 250
-            && this.state.elements[1].visible){
+            && this.state.playerX < 250){
+            //&& this.state.elements[1].visible){
             this.tirEnnemy()
               this.state.currentElements[1].visible = false
             setTimeout(() => {
@@ -105,7 +109,6 @@ export class Player2 extends Component {
                 this.setState({
                   elements: this.state.currentElements
                 })
-                global.enemies = this.state.currentElements
                 this.tir()
               }
             }) 
@@ -202,11 +205,6 @@ const styles = StyleSheet.create({
     borderLeftColor: 'transparent',
     borderRightColor: 'transparent',
    
-  },
-  triangleRotate: {
-    transform: [
-      {rotate: '180deg'}
-    ]
   },
   tir: {
     position: 'absolute',

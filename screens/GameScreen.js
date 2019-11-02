@@ -13,24 +13,26 @@ import { Player2 } from '../components/Player2'
 import { Enemy } from '../components/Enemy'
 import { TirPlayer1 } from '../components/TirPlayer1'
 import { Players } from '../components/Players'
+import { Game } from '../components/Game'
 
 export default class GameScreen extends Component {
     constructor(props) {
       super(props);
+      this.state= {
+        elements: [
+            {id:0, visible:true},
+            {id:1, visible:true}
+          ]
+    }
     }
   render(){
   global.scoreJ1 = 0
   global.scoreJ2 = 0
-  global.enemies = {
-    elements: [
-      {id:0, visible:true},
-      {id:1, visible:true}
-    ],
-  }
   return (
-    <View styles={styles.container}>
-      <Players navigation={this.props.navigation} isPlayer1={true} boxStyle={styles.player1}></Players>
-      <Player2 boxStyle={styles.player2}></Player2>
+    <View style={styles.container}>
+        <Enemy elements={this.state.elements}></Enemy>
+        <Players boxStyle={styles.player1} isPlayer1={true} elements={this.state.elements}></Players>
+        <Player2 boxStyle={styles.player2} elements={this.state.elements}></Player2>
     </View>
   );
   }
