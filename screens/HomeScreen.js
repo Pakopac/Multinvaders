@@ -10,11 +10,12 @@ import {
   Dimensions,
 } from 'react-native';
 
+console.disableYellowBox = true
 export default class HomeScreen extends Component {
-  
   render(){
+    console.log(this.props)
   return (
-    <View style={styles.container}>
+    <View style={styles.container} scoreJ1={this.props.scoreJ1} scoreJ2={this.props.scoreJ2}>
     <Button 
       style={styles.button}
       title="Start the Game !"

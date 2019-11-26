@@ -6,7 +6,7 @@ import {
   FlatList,
  } from 'react-native';
 
-import Players from '../components/Players'
+import Player1 from './Player1'
 import { Player2 } from './Player2';
 import { Enemy } from '../components/Enemy'
 
@@ -21,7 +21,7 @@ export class Game extends Component {
         return(
         <View>
             <Enemy></Enemy>
-            <Players boxStyle={styles.player1}></Players>
+            <Player1 boxStyle={styles.player1}></Player1>
             <Player2 boxStyle={styles.player2}></Player2>
         </View>
         )

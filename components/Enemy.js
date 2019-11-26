@@ -31,7 +31,6 @@ export class Enemy extends Component {
       }
 
     render(){
-        console.log(this.state.elements)
         return(
 
             <FlatList

@@ -40,9 +40,14 @@ export class Player2 extends Component {
           {id:0, visible:true},
           {id:1, visible:true}
         ],
+        EnnemyChange: {
+          id:0,
+          visible:true
+        },
         topPosition: new Animated.Value(50),
         left: Window.width - 45, 
         playerX: Window.width - 45,
+        scoreJ2: 0,
       }
 
   }
@@ -63,26 +68,24 @@ export class Player2 extends Component {
             && this.state.playerX < 150){
             //&& this.state.elements[0].visible){
             this.tirEnnemy()
-               this.state.currentElements[0].visible = false
-            setTimeout(() => {
-               this.state.currentElements[0].visible = true
-            }, 4000)
             this.setState({
-              scoreJ2: global.scoreJ2 +=1
+              EnnemyChange: {id:0,visible:false}
             })
+            this.setState({
+              scoreJ2: this.props.scoreJ2 +1
+            })
+            this.props.parentReference(this.state.scoreJ2)  
      
           }
           else if(this.state.playerX > 200 
             && this.state.playerX < 250){
             //&& this.state.elements[1].visible){
             this.tirEnnemy()
-              this.state.currentElements[1].visible = false
-            setTimeout(() => {
-              this.state.currentElements[1].visible = true
-            }, 4000)
             this.setState({
-              scoreJ2: global.scoreJ2 +=1
+              EnnemyChange: {id:1,visible:false},
+              scoreJ2: this.props.scoreJ2 +=1
             })
+            this.props.parentReference(this.state.scoreJ2)  
      
           }
           else{
@@ -93,7 +96,7 @@ export class Player2 extends Component {
 
       tirEnnemy(){
 
-        this.state.topPosition.setValue(0)
+        this.state.topPosition.setValue(50)
           
           Animated.sequence([
             Animated.timing(this.state.topPosition, {
@@ -106,9 +109,7 @@ export class Player2 extends Component {
                 left: this.state.playerX,
               })
               if(e.finished){
-                this.setState({
-                  elements: this.state.currentElements
-                })
+                this.props.removeItem(this.state.currentElements)
                 this.tir()
               }
             }) 

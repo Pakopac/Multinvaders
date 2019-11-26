@@ -6,7 +6,7 @@ import {
     Dimensions,
     Animated,
 } from 'react-native';
-import { Players } from '../components/Players'
+import { Players } from './Player1'
 
 
 
@@ -22,7 +22,7 @@ export class TirPlayer1 extends Component{
   }
 
   loop(){
-    
+
     this.state.topPosition.setValue(startAnim)
     Animated.sequence([
     Animated.timing(this.state.topPosition, {

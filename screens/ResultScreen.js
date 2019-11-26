@@ -11,10 +11,12 @@ import {
 } from 'react-native';
 import { Result } from '../components/Result'
 
+console.disableYellowBox = true
 export default class ResultScreen extends Component {
   render(){
+    console.log(this.props.navigation.state.params)
   return (
-    <Result score={this.props.navigation.state.params}></Result>
+    <Result score={this.props.navigation.state.params} ></Result>
   );
   }
 }
