@@ -71,10 +71,6 @@ export class Player2 extends Component {
             this.setState({
               EnnemyChange: {id:0,visible:false}
             })
-            this.setState({
-              scoreJ2: this.props.scoreJ2 +1
-            })
-            this.props.parentReference(this.state.scoreJ2)  
      
           }
           else if(this.state.playerX > 200 
@@ -83,9 +79,7 @@ export class Player2 extends Component {
             this.tirEnnemy()
             this.setState({
               EnnemyChange: {id:1,visible:false},
-              scoreJ2: this.props.scoreJ2 +=1
             })
-            this.props.parentReference(this.state.scoreJ2)  
      
           }
           else{
@@ -109,7 +103,11 @@ export class Player2 extends Component {
                 left: this.state.playerX,
               })
               if(e.finished){
-                this.props.removeItem(this.state.currentElements)
+                this.setState({
+                  scoreJ2: this.props.scoreJ2 +1
+                })
+                this.props.parentReference(this.state.scoreJ2)  
+                this.props.removeItem(this.state.EnnemyChange.id,this.state.EnnemyChange.visible)
                 this.tir()
               }
             }) 

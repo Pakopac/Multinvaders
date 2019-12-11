@@ -17,6 +17,7 @@ import { Player2 } from '../components/Player2'
 import { Enemy } from '../components/Enemy'
 import { TirPlayer1 } from '../components/TirPlayer1'
 import { Game } from '../components/Game'
+import { StackActions, NavigationActions } from 'react-navigation';
 export default class GameScreen extends Component {
     constructor(props) {
       super(props);
@@ -92,11 +93,18 @@ export default class GameScreen extends Component {
    
 
     setTimeout(() => {
-      this.props.navigation.navigate('Result',{scoreJ1:this.state.scoreJ1,scoreJ2:this.state.scoreJ2})
+      //this.props.navigation.navigate('Result',{scoreJ1:this.state.scoreJ1,scoreJ2:this.state.scoreJ2})
+      const resetAction = StackActions.reset({
+        index: 0,
+        actions: [NavigationActions.navigate({ routeName: 'Result',  params: { scoreJ1: this.state.scoreJ1,scoreJ2:this.state.scoreJ2 } })],
+      });
+      this.props.navigation.dispatch(resetAction)
     }, 10000)
 
   return (
     <View style={styles.container}>
+    <Text style={styles.scoreJ1}>{this.state.scoreJ1}</Text>
+    <Text style={styles.scoreJ2}>{this.state.scoreJ2}</Text>
           <FlatList
                 horizontal={true}
                 renderItem={this.renderItem}
@@ -132,7 +140,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   player1: {
-    top: 600,
+    top: 650,
     borderBottomColor: 'blue',
     left: 20,
   },
@@ -157,4 +165,17 @@ diamond:{
     {rotate: '45deg'}
     ]    
 },
+scoreJ1:{
+  position: 'absolute',
+  top: 50,
+  left: 30,
+  fontSize: 20
+},
+scoreJ2:{
+  position: 'absolute',
+  bottom: 50,
+  right: 30,
+  fontSize: 20,
+  transform: [{ rotate: "180deg" }]
+}
 });

@@ -59,14 +59,8 @@ export class Player1 extends Component {
   }
 
   tir(){
-    if(this.props.isPlayer1){
-      this.state.topPosition.setValue(Window.height - 125) 
+      this.state.topPosition.setValue(Window.height - 75) 
       var endAnim = 0
-    }
-    else{
-      this.state.topPosition.setValue(50) 
-      var endAnim = Window.height
-    }
       Animated.sequence([
         Animated.timing(this.state.topPosition, {
             toValue: endAnim,
@@ -78,24 +72,20 @@ export class Player1 extends Component {
             left: this.state.playerX
           })
           if(this.state.playerX > 100 
-            && this.state.playerX < 150
-            && this.state.currentElements[0].visible){
+            && this.state.playerX < 150){
+            //&& this.state.currentElements[0].visible){
             this.tirEnnemy()
             this.setState({
               EnnemyChange: {id:0,visible:false},
-              scoreJ1: this.state.scoreJ1 + 1
             })
           }
           else if(this.state.playerX > 200 
-            && this.state.playerX < 250
-            && this.state.currentElements[1].visible){
+            && this.state.playerX < 250){
+           // && this.state.currentElements[1].visible){
             this.tirEnnemy()
             this.setState({
               EnnemyChange: {id:1,visible:false},
-              scoreJ1: this.state.scoreJ1 + 1
-            })
-            console.log(this.state.scoreJ1)
-            this.props.parentReference(this.state.scoreJ1)    
+            }) 
           }
           else{
             this.tir()
@@ -104,7 +94,7 @@ export class Player1 extends Component {
       }
 
       tirEnnemy(){
-          this.state.topPosition.setValue(Window.height - 125)
+          this.state.topPosition.setValue(Window.height - 75)
           Animated.sequence([
             Animated.timing(this.state.topPosition, {
                 toValue: Window.height/2,
@@ -116,6 +106,10 @@ export class Player1 extends Component {
                 left: this.state.playerX,
               })
               if(e.finished){
+                this.setState({
+                  scoreJ1: this.props.scoreJ1 +1
+                })
+                this.props.parentReference(this.state.scoreJ1)  
                 this.props.removeItem(this.state.EnnemyChange.id,this.state.EnnemyChange.visible)
                 /*this.setState({
                   elements: this.state.currentElements
