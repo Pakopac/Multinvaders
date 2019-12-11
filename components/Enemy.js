@@ -56,9 +56,4 @@ const styles = StyleSheet.create({
         {rotate: '45deg'}
         ]    
     },
-    player1: {
-        top: 600,
-        borderBottomColor: 'blue',
-        left: 20,
-      },
 })

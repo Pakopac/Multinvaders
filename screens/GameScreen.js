@@ -9,7 +9,7 @@ import {
   Dimensions,
   FlatList,
   AsyncStorage,
-  BackHandler
+  BackHandler,
 } from 'react-native';
 console.disableYellowBox = true
 import { Player1 } from '../components/Player1'
@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   player1: {
-    top: 600,
+    top: 650,
     borderBottomColor: 'blue',
     left: 20,
   },

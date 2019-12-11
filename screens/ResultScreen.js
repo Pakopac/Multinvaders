@@ -14,9 +14,17 @@ import { Result } from '../components/Result'
 console.disableYellowBox = true
 export default class ResultScreen extends Component {
   render(){
-    console.log(this.props.navigation.state.params)
   return (
-    <Result score={this.props.navigation.state.params} ></Result>
+    <View>
+      <Result score={this.props.navigation.state.params} >
+      </Result>
+        <Button 
+        style={styles.button}
+        title="Retry"
+        onPress={() =>  this.props.navigation.navigate('Home')}>
+    </Button>
+   </View>
+    
   );
   }
 }

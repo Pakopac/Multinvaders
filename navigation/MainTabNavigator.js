@@ -6,6 +6,7 @@ import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import GameScreen from '../screens/GameScreen';
 import ResultScreen from '../screens/ResultScreen';
+import TestScreen from '../screens/TestScreen'
 
 const config = Platform.select({
   web: { headerMode: 'screen' },
@@ -17,6 +18,7 @@ const GameStack = createStackNavigator(
       Home: HomeScreen,
       Game: GameScreen,
       Result: ResultScreen,
+      Test: TestScreen
   },
   config
 );

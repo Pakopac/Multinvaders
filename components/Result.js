@@ -3,7 +3,8 @@ import {
   Text,
   View,
   Dimensions,
-  StyleSheet
+  StyleSheet,
+  Button
  } from 'react-native';
 
 
