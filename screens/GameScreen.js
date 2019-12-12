@@ -18,6 +18,8 @@ import { Enemy } from '../components/Enemy'
 import { TirPlayer1 } from '../components/TirPlayer1'
 import { Game } from '../components/Game'
 import { StackActions, NavigationActions } from 'react-navigation';
+
+let Window = Dimensions.get('window');
 export default class GameScreen extends Component {
     constructor(props) {
       super(props);
@@ -27,7 +29,11 @@ export default class GameScreen extends Component {
             {id:1, visible:true}
           ],
           scoreJ1:0,
-          scoreJ2:0
+          scoreJ2:0,
+          playerXJ1: 45,
+          playerXJ2: Window.width - 45,
+          isJ1Alive: true,
+          isJ2Alive: true
     }
     }
   
@@ -90,7 +96,16 @@ export default class GameScreen extends Component {
  }
 
   render(){
-   
+    
+    var player1Component = this.state.isJ1Alive ? <Player1 boxStyle={styles.player1} isPlayer1={true} elements={this.state.elements} removeItem={this.removeItem} 
+    scoreJ1={this.state.scoreJ1} onRef={ref => (this.parentReference = ref)} parentReference = {this.scoreJ1Method.bind(this)}
+    setPlayerXJ1= {this.playerXJ1Method.bind(this)} playerX={this.state.playerXJ1} 
+    playerXJ2={this.state.playerXJ2} J2Alive = {this.J2Alive.bind(this)}></Player1> : null
+
+    var player2Component = this.state.isJ2Alive ? <Player2 boxStyle={[styles.player2, this.state.isJ2Alive ? styles.red : styles.white]} elements={this.state.elements} removeItem={this.removeItem} scoreJ2={this.state.scoreJ2}
+    onRef={ref => (this.setPlayerXJ2 = ref)} parentReference = {this.scoreJ2Method.bind(this)}
+    setPlayerXJ2= {this.playerXJ2Method.bind(this)} playerX={this.state.playerXJ2} isAlive={this.state.isJ2Alive}
+    playerXJ1={this.state.playerXJ1} J1Alive = {this.J1Alive.bind(this)}> </Player2>: null;
 
     setTimeout(() => {
       //this.props.navigation.navigate('Result',{scoreJ1:this.state.scoreJ1,scoreJ2:this.state.scoreJ2})
@@ -99,7 +114,26 @@ export default class GameScreen extends Component {
         actions: [NavigationActions.navigate({ routeName: 'Result',  params: { scoreJ1: this.state.scoreJ1,scoreJ2:this.state.scoreJ2 } })],
       });
       this.props.navigation.dispatch(resetAction)
-    }, 10000)
+    }, 20000)
+
+
+    if(this.state.isJ1Alive === false){
+      setTimeout(() => {
+        this.setState({
+          playerXJ1: 45,
+          isJ1Alive: true
+        })
+      }, 2000)
+    }
+
+    if(this.state.isJ2Alive === false){
+      setTimeout(() => {
+        this.setState({
+          playerXJ2: Window.width - 45,
+          isJ2Alive: true
+        })
+      }, 2000)
+    }
 
   return (
     <View style={styles.container}>
@@ -110,11 +144,10 @@ export default class GameScreen extends Component {
                 renderItem={this.renderItem}
                 data={this.state.elements}
                 style={styles.listEnnemies} />
-        <Player1 boxStyle={styles.player1} isPlayer1={true} elements={this.state.elements} removeItem={this.removeItem} 
-        scoreJ1={this.state.scoreJ1} onRef={ref => (this.parentReference = ref)} parentReference = {this.scoreJ1Method.bind(this)}></Player1>
-        <Player2 boxStyle={styles.player2} elements={this.state.elements} removeItem={this.removeItem} scoreJ2={this.state.scoreJ2}
-          onRef={ref => (this.parentReference = ref)}
-          parentReference = {this.scoreJ2Method.bind(this)}></Player2>
+
+        {player1Component}
+        {player2Component}
+
     </View>
   );
   }
@@ -128,12 +161,39 @@ export default class GameScreen extends Component {
       scoreJ2: data
     })
   }
+
+  playerXJ1Method(data){
+    this.setState({
+      playerXJ1: data
+    })
+  }
+
+  playerXJ2Method(data){
+    this.setState({
+      playerXJ2: data
+    })
+  }
+
+  J1Alive(data){
+    if(this.state.isJ1Alive === true){
+      this.setState({
+        isJ1Alive: data
+      })
+    }
+  }
+
+  J2Alive(data){
+    if(this.state.isJ2Alive === true){
+      this.setState({
+        isJ2Alive: data
+      })
+    }
+  }
 }
 
 GameScreen.navigationOptions = {
   header: null,
 };
-let Window = Dimensions.get('window');
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -147,7 +207,6 @@ const styles = StyleSheet.create({
   player2: {
     top: 30,
     right: 20,
-    borderBottomColor: 'red',
   },
   enemy1: {
     left: 100,
@@ -177,5 +236,12 @@ scoreJ2:{
   right: 30,
   fontSize: 20,
   transform: [{ rotate: "180deg" }]
+},
+red:{
+  borderTopColor: 'red'
+},
+white:{
+  borderTopColor: 'white'
 }
+
 });

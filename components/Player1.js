@@ -33,6 +33,7 @@ export class Player1 extends Component {
       ],
       {
         listener: event => {
+          //this.props.setPlayerXJ1(this.state.playerX) 
           this.state.playerX = event.nativeEvent.absoluteX
         },
       },
@@ -89,6 +90,12 @@ export class Player1 extends Component {
           }
           else{
             this.tir()
+          }
+          if(e.finished){
+            if(this.state.playerX > this.props.playerXJ2 - 50 &&
+              this.state.playerX < this.props.playerXJ2 + 50){
+                this.props.J2Alive(false)  
+              }
           }
         }) 
       }
@@ -237,11 +244,7 @@ tirPlayer2:{
   width: 4,
   backgroundColor: 'red'
 },
-player1: {
-  top: 600,
-  borderBottomColor: 'blue',
-  left: 20,
-},
+
 listEnnemies:{
   position: 'absolute',
   top: Window.height/2 - 25,

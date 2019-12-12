@@ -30,6 +30,7 @@ export class Player2 extends Component {
       ],
       {
         listener: event => {
+          this.props.setPlayerXJ2(this.state.playerX)  
           this.state.playerX = event.nativeEvent.absoluteX
         },
       },
@@ -46,8 +47,10 @@ export class Player2 extends Component {
         },
         topPosition: new Animated.Value(50),
         left: Window.width - 45, 
-        playerX: Window.width - 45,
+        playerXJ1: 45,
+        playerXJ2: Window.width - 45,
         scoreJ2: 0,
+        isAlive: true,
       }
 
   }
@@ -85,6 +88,13 @@ export class Player2 extends Component {
           else{
             this.tir()
           }
+          if(e.finished){
+            console.log(this.props.playerXJ1)
+            if(this.state.playerX > this.props.playerXJ1 - 50 &&
+              this.state.playerX < this.props.playerXJ1 + 50){
+                this.props.J1Alive(false)  
+              }
+          }
         }) 
       }
 
@@ -108,7 +118,9 @@ export class Player2 extends Component {
                 })
                 this.props.parentReference(this.state.scoreJ2)  
                 this.props.removeItem(this.state.EnnemyChange.id,this.state.EnnemyChange.visible)
-                this.tir()
+                
+                  this.tir()
+                
               }
             }) 
           }
@@ -118,7 +130,6 @@ export class Player2 extends Component {
   }
 
   _onGestureEvent = event => {
-  
     this.setState({
       playerX: event.nativeEvent.absoluteX,
       });
@@ -127,7 +138,6 @@ export class Player2 extends Component {
   _onHandlerStateChange = event => {
     this.setState({
       playerX: event.nativeEvent.absoluteX,
-      
       });
     if (event.nativeEvent.oldState === State.ACTIVE) {
       this._lastOffset.x += event.nativeEvent.translationX;
@@ -150,11 +160,11 @@ export class Player2 extends Component {
     }
   }*/
   render() {
-    /*setTimeout(() => {
-      this.props.navigation.navigate('Result', {
-        scoreJ2: this.state.scoreJ2,
-    })
-    }, 20000)*/
+    if(this.state.isAlive !== this.props.isAlive){
+      this.setState({
+        isAlive: this.props.isAlive
+      })
+    }
     return (
       
       <View>
@@ -179,6 +189,7 @@ export class Player2 extends Component {
               ],
             } ,
             this.props.boxStyle,
+            this.state.isJ2Alive ? styles.red : styles.white
           ]}
         />
       </PanGestureHandler>
@@ -244,5 +255,11 @@ enemy1:{
 },
 enemy2:{
   left: 200
+},
+red:{
+  borderBottomColor: "red"
+},
+white:{
+  borderBottomColor: "white"
 }
 });
